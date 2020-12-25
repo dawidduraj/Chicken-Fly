@@ -9,8 +9,8 @@ public class PlayerLauncher : MonoBehaviour
     public float RotationSpeed = 2f;
 
 
-    int launchstage = 0;
     bool launched = false;
+    int launchstage = 0;
     Rigidbody2D rb;
     Text speedtext;
     Transform arrow;
@@ -36,30 +36,31 @@ public class PlayerLauncher : MonoBehaviour
         {
             return;
         }
-
-        switch (launchstage)
+        if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && launchstage != 2)
         {
-            default:
-                transform.rotation = Quaternion.Euler(0f, 0f, (35f * Mathf.Sin(Time.time * RotationSpeed)) + 45);
-                if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)))
-                {
-                    launchstage = 1;
-                    
-                }
-                break;
-            case 1:
-                arrow.localScale = new Vector3(Mathf.Sin(Time.time * RotationSpeed)+1,1f,1f);
-                //arrow.localPosition = new Vector3(Mathf.Sin(Time.time * RotationSpeed) +1, 0f, 0f);
-                break;
-        }
+            launchstage ++;
 
-        if (Input.GetMouseButtonDown(0) && !launched && launchstage == 2)
+        }
+        if (!launched)
         {
-            rb.WakeUp();
-            rb.velocity = rb.transform.right * LaunchVelocity;
-            launched = true;
+            switch (launchstage)
+            {
+                default:
+                    transform.rotation = Quaternion.Euler(0f, 0f, (35f * Mathf.Sin(Time.time * RotationSpeed)) + 45);
+                    break;
+                case 1:
+                    arrow.localScale = new Vector3(Mathf.Sin(Time.time * RotationSpeed) + 2f, 1f, 1f);
+                    //TODO: Fix sizing
+                    //arrow.localPosition = new Vector3(Mathf.Sin(Time.time * RotationSpeed) +1, 0f, 0f);
+                    break;
+                case 2:
+                    rb.WakeUp();
+                    Debug.Log(LaunchVelocity * arrow.transform.localScale.x);
+                    rb.velocity = transform.right * (LaunchVelocity * arrow.transform.localScale.x);
+                    launched = true;
+                    break;
+            }
         }
-
         speedtext.text = "Speed: " + Mathf.RoundToInt(rb.velocity.magnitude).ToString() + " m/s";
 
     }

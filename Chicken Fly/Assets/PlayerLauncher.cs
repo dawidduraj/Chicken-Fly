@@ -9,16 +9,18 @@ public class PlayerLauncher : MonoBehaviour
     public float RotationSpeed = 2f;
 
 
-    Text speedtext;
-    bool rotationLock = false;
+    int launchstage = 0;
     bool launched = false;
     Rigidbody2D rb;
+    Text speedtext;
+    Transform arrow;
 
 
     void Start()
     {
         rb = GetComponent(typeof(Rigidbody2D)) as Rigidbody2D;
         speedtext = Camera.main.GetComponentInChildren(typeof(Text)) as Text;
+        arrow = transform.GetChild(0).transform;
         if (rb != null)
         {
             rb.Sleep();
@@ -34,18 +36,24 @@ public class PlayerLauncher : MonoBehaviour
         {
             return;
         }
-        
-        if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && !rotationLock)
+
+        switch (launchstage)
         {
-            rotationLock = true;
-            return;
-        }
-        if (!rotationLock)
-        {
-            transform.rotation = Quaternion.Euler(0f, 0f, (35f * Mathf.Sin(Time.time * RotationSpeed)) + 45);
+            default:
+                transform.rotation = Quaternion.Euler(0f, 0f, (35f * Mathf.Sin(Time.time * RotationSpeed)) + 45);
+                if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)))
+                {
+                    launchstage = 1;
+                    
+                }
+                break;
+            case 1:
+                arrow.localScale = new Vector3(Mathf.Sin(Time.time * RotationSpeed)+1,1f,1f);
+                //arrow.localPosition = new Vector3(Mathf.Sin(Time.time * RotationSpeed) +1, 0f, 0f);
+                break;
         }
 
-        if (Input.GetMouseButtonDown(0) && !launched && rotationLock)
+        if (Input.GetMouseButtonDown(0) && !launched && launchstage == 2)
         {
             rb.WakeUp();
             rb.velocity = rb.transform.right * LaunchVelocity;

@@ -58,10 +58,22 @@ public class PlayerLauncher : MonoBehaviour
                     Debug.Log(LaunchVelocity * arrow.transform.localScale.x);
                     rb.velocity = transform.right * (LaunchVelocity * arrow.transform.localScale.x);
                     launched = true;
+                    arrow.gameObject.SetActive(false);
                     break;
+
             }
         }
         speedtext.text = "Speed: " + Mathf.RoundToInt(rb.velocity.magnitude).ToString() + " m/s";
 
     }
+    void LateUpdate()
+    {
+        if (launched)
+        {
+            Camera.main.transform.parent = transform;
+            Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition,new Vector3(0,0,-10f),Time.deltaTime * 2f);
+        }
+    }
+
 }
+

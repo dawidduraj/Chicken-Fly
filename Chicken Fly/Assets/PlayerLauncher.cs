@@ -16,17 +16,14 @@ public class PlayerLauncher : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        Launch();
-    }
+    void Update() => Launch();
 
     void Launch()
     {
         if (Input.GetMouseButtonDown(0) && !launched)
         {
             rb.WakeUp();
-            rb.velocity = new Vector2(LaunchVelocity, LaunchVelocity);
+            rb.velocity = rb.transform.right * LaunchVelocity;
             launched = true;
         }
         veltext.text = Mathf.RoundToInt(rb.velocity.magnitude).ToString() + " m/s";

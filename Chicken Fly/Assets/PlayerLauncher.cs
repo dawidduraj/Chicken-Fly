@@ -23,7 +23,7 @@ public class PlayerLauncher : MonoBehaviour
         arrow = transform.GetChild(0).transform;
         if (rb != null)
         {
-            rb.Sleep();
+            rb.isKinematic = true;
         }
     }
 
@@ -54,8 +54,7 @@ public class PlayerLauncher : MonoBehaviour
                     //arrow.localPosition = new Vector3(Mathf.Sin(Time.time * RotationSpeed) +1, 0f, 0f);
                     break;
                 case 2:
-                    rb.WakeUp();
-                    Debug.Log(LaunchVelocity * arrow.transform.localScale.x);
+                    rb.isKinematic = false;
                     rb.velocity = transform.right * (LaunchVelocity * arrow.transform.localScale.x);
                     launched = true;
                     arrow.gameObject.SetActive(false);
@@ -72,6 +71,7 @@ public class PlayerLauncher : MonoBehaviour
         {
             Camera.main.transform.parent = transform;
             Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition,new Vector3(0,0,-10f),Time.deltaTime * 2f);
+            Camera.main.transform.rotation = Quaternion.identity;
         }
     }
 

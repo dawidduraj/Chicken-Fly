@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class PlayerLauncher : MonoBehaviour
     public float LaunchVelocity = 5f;
     public float RotationSpeed = 2f;
 
-
+    float startingPosition;
     bool launched = false;
     int launchstage = 0;
     Rigidbody2D rb;
@@ -18,6 +19,7 @@ public class PlayerLauncher : MonoBehaviour
 
     void Start()
     {
+        startingPosition = transform.position.x;
         rb = GetComponent(typeof(Rigidbody2D)) as Rigidbody2D;
         speedtext = Camera.main.GetComponentInChildren(typeof(Text)) as Text;
         arrow = transform.GetChild(0).transform;
@@ -28,7 +30,16 @@ public class PlayerLauncher : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() => Launch();
+    void Update() 
+    {
+        Launch();
+        Land();
+    }
+
+    void Land()
+    {
+
+    }
 
     void Launch()
     {
@@ -62,7 +73,7 @@ public class PlayerLauncher : MonoBehaviour
 
             }
         }
-        speedtext.text = "Speed: " + Mathf.RoundToInt(rb.velocity.magnitude).ToString() + " m/s";
+        speedtext.text = "Speed: " + Mathf.RoundToInt(rb.velocity.magnitude).ToString() + " m/s Distance: " + Mathf.RoundToInt(transform.position.x - startingPosition).ToString() + " m";
 
     }
     void LateUpdate()

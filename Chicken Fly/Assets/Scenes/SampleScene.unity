@@ -574,8 +574,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 878456531}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.5, z: 0}
-  m_LocalScale: {x: 18, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -15.2939, z: 0}
+  m_LocalScale: {x: 18, y: 20.5878, z: 1}
   m_Children:
   - {fileID: 935846604}
   - {fileID: 793674064}
@@ -918,6 +918,7 @@ GameObject:
   - component: {fileID: 1839702005}
   - component: {fileID: 1839702008}
   - component: {fileID: 1839702009}
+  - component: {fileID: 1839702010}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1026,6 +1027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LaunchVelocity: 5
   RotationSpeed: 2
+  launched: 0
 --- !u!61 &1839702009
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1052,3 +1054,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1839702010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1839702004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a36ccb671bd684c8a3e733de726758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Radius: 19
+  Clearance: 1
+  time: 1
+  EntitySpacing: 5
+  Entities:
+  - {fileID: 1789367065349002239, guid: c76c5f3fc59e2a54999de3c90ce2104c, type: 3}
+  - {fileID: 5628467658421419795, guid: b3535dee2ac93714e8c7dae991faeac2, type: 3}
+  SpawnChance:
+  - 1
+  - 1

@@ -10,7 +10,8 @@ public class PlayerLauncher : MonoBehaviour
     public float RotationSpeed = 2f;
 
     float startingPosition;
-    bool launched = false;
+    [HideInInspector]
+    public bool launched = false;
     int launchstage = 0;
     Rigidbody2D rb;
     Text speedtext;

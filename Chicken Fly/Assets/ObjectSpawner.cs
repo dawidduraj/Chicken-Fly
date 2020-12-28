@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class ObjectSpawner : MonoBehaviour
 {
-    public float Radius = 10f, Clearance = 1f, time = 2f, EntitySpacing = 1f;
+    public float MinimumHeight = 2f, time = 2f;
     public GameObject[] Entities;
     public float[] SpawnChance;
 
     PlayerLauncher launcher;
+    new Rigidbody2D rigidbody;
+    GameObject[] SpawningPoints;
 
     // Start is called before the first frame update
     void Start()
     {
+        rigidbody = GetComponent<Rigidbody2D>();
+        SpawningPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         launcher = GetComponent<PlayerLauncher>();
         StartCoroutine(SpawnEntity());
     }
@@ -23,16 +27,12 @@ public class ObjectSpawner : MonoBehaviour
         {
             if (launcher.launched)
             {
-                Vector2 spawnPos = transform.position;
-                spawnPos += Random.insideUnitCircle.normalized * Radius;
-
-                //bool validPosition = true;
-                if (!Physics.CheckSphere(spawnPos, EntitySpacing))
+                Vector3 spawnPos = SpawningPoints[Random.Range(0, SpawningPoints.Length)].transform.position;
+                if (spawnPos.y >= MinimumHeight && !Physics.CheckSphere(spawnPos,0.5f) && rigidbody.velocity.x > 0.5f)
                 {
-                   Debug.Log(Physics.CheckSphere(spawnPos, EntitySpacing));
-                   Instantiate(Entities[Random.Range(0, Entities.Length)], spawnPos, Quaternion.identity);
+                    Instantiate(Entities[Random.Range(0, Entities.Length)], spawnPos, Quaternion.identity);
                 }
-                
+
                 yield return new WaitForSeconds(time);
             }
             yield return null;

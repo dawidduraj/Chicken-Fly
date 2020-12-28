@@ -6,7 +6,7 @@ public class ObjectSpawner : MonoBehaviour
 {
     public float MinimumHeight = 2f, time = 2f;
     public GameObject[] Entities;
-    public float[] SpawnChance;
+    public int[] SpawnChance;
 
     PlayerLauncher launcher;
     new Rigidbody2D rigidbody;
@@ -30,12 +30,38 @@ public class ObjectSpawner : MonoBehaviour
                 Vector3 spawnPos = SpawningPoints[Random.Range(0, SpawningPoints.Length)].transform.position;
                 if (spawnPos.y >= MinimumHeight && !Physics.CheckSphere(spawnPos,0.5f) && rigidbody.velocity.x > 0.5f)
                 {
-                    Instantiate(Entities[Random.Range(0, Entities.Length)], spawnPos, Quaternion.identity);
+                    Instantiate(Entities[CalculateSpawnChance()], spawnPos, Quaternion.identity);
                 }
 
                 yield return new WaitForSeconds(time);
             }
             yield return null;
         }    
+    }
+
+    int CalculateSpawnChance()
+    {
+        int itemweight = 0;
+
+        for (int i = 0; i < SpawnChance.Length; i++)
+        {
+            itemweight += SpawnChance[i];
+        }
+
+        int rng = Random.Range(0,itemweight);
+
+        for (int j = 0; j < SpawnChance.Length; j++)
+        {
+            if (rng <= SpawnChance[j])
+            {
+                return j;
+            }
+            else
+            {
+                rng -= SpawnChance[j];
+            }
+        }
+        Debug.LogError("Something Went Wrong!");
+        return 1;
     }
 }
